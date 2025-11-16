@@ -1,0 +1,221 @@
+/* --- Main Layout --- */
+.app-wrapper {
+  align-items:center;
+  display: flex;
+  width: 100%;
+  max-width: 1100px; 
+  margin: 2rem;
+  transform: scale(0.9); 
+}
+
+/* --- Far Left Sidebar --- */
+.sidebar {
+  width: 80px;
+  background: rgb(253, 253, 253); 
+  color:rgb(189, 194, 194); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
+  border-radius: 15px 0 0 15px;
+  box-shadow: 0 10px 20px rgba(18, 15, 204, 0.1);
+  
+}
+
+.sidebar-icon {
+  cursor: pointer;
+  margin-bottom: 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.sidebar-icon span {
+  margin-top: 1.0rem;
+  margin-bottom: 1.0rem ;
+}
+
+.sidebar-icon:hover {
+  color:whitesmoke;
+  background:blueviolet; 
+  border-radius:10px; 
+  width: 100px;
+}
+
+.sidebar-icon.active {
+  color: #ffffff;
+  background: rgb(6, 60, 168); 
+  border-radius: 10px;
+  width: 100px; 
+  padding: 8px 0;
+}
+
+
+/* --- Main Login/Signup Card --- */
+.main-container {
+  display: flex;
+  width: 1000px;
+  max-height: 650px;   
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0 15px 15px 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out; 
+  
+}
+.main-container.doctor-mode,
+.main-container.admin-mode {
+  transition: none; 
+  max-height: 575px; 
+}
+
+.form-panel {
+  flex: 1; 
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Blue Left Panel --- */
+.blue-panel {
+  background: rgb(6, 60, 168); 
+  color: white;
+  text-align: left;
+  justify-content: center;
+}
+
+.blue-panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.blue-panel p {
+  font-size: 1rem;
+  color: #C9C9C9;
+}
+.panel-image {
+  width: 100%;
+  max-width: 250px;
+  margin-top: 3rem;
+  align-self: center;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 50%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, black 50%, transparent 80%);
+}
+
+/* --- White Right Panel (Form) --- */
+.white-panel {
+  background: #F2E9E4; 
+}
+
+.white-panel-header {
+  text-align: right;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.white-panel-header span {
+  color: #4A4E69; 
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.white-panel-header .toggle-link {
+  color: #4A4E69; 
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+  display: inline-block; 
+}
+
+
+.form-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-title {
+  color: #22223B; 
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-group .icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem; 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+.form-button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background:rgb(6, 60, 168); 
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.form-button:hover {
+  background:blueviolet 
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 2rem;
+  color: #888;
+  font-size: 0.8rem;
+  max-width: 300px;
+  align-self: center;
+  line-height: 1.4;
+}
+
+.username-input {
+  max-height: 100px; 
+  opacity: 1;
+  overflow: hidden;
+  
+  transition: max-height 1.0s ease-in-out, 
+              opacity 1.0s ease-in-out, 
+              margin-bottom 1.0s ease-in-out;
+}
+
+.main-container.sign-in-mode .username-input {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.main-container.sign-in-mode {
+  max-height: 600px; 
+  
+}
+.signin, .signup {
+  display: inline;
+}
+
