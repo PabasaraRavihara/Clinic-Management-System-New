@@ -308,7 +308,7 @@
 /* --- Dashboard Main Content --- */
 .dashboard-main {
   flex: 1;
-  overflow-y: auto; /* Scroll if content is too long */
+  overflow-y: auto; /* --Scroll-- */
 }
 .dashboard-header {
   padding: 1.5rem 2rem;
@@ -328,23 +328,30 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
 }
-
+/* --- status cards ---*/
 .stat-card {
-  background: white;
+  background: #063ca8;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(20, 136, 189, 0.873);
   border: 1px solid #e0e0e0;
 }
 .stat-card h3 {
   font-size: 1rem;
-  color: #555;
+  color: white;
   margin: 0 0 0.5rem 0;
 }
 .stat-card p {
   font-size: 2.25rem;
   font-weight: bold;
-  color: #063ca8;
+  color:white;
   margin: 0;
+}
+.stat-card:hover {
+  background: linear-gradient(135deg, #0072ff 10%, #00c6ff 100%)
+}
+.stat-card p:active,
+.stat-card h3:active{
+  color: white;
 }
 
