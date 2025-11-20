@@ -1,3 +1,16 @@
+/* ---Background for Login/Signup Screens --- */
+.auth-background {
+  background: url(/loginimage.jpg); 
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* --- Main Layout --- */
 .app-wrapper {
   align-items:center;
@@ -217,5 +230,121 @@
 }
 .signin, .signup {
   display: inline;
+}
+
+/*--Admin Dashboard Styles ---*/
+
+.dashboard-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background: #f4f7fa;
+}
+
+/* --- Dashboard Sidebar --- */
+.dashboard-sidebar {
+  width: 260px;
+  background: #063ca8; 
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-logo {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dashboard-logo h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.dashboard-nav {
+  flex-grow: 1; /* Pushes logout to bottom */
+  margin-top: 1.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #C9C9C9;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+.nav-item svg {
+  margin-right: 0.75rem;
+  width: 20px;
+  height: 20px;
+}
+.nav-item:hover {
+  background: white;
+  color:red;
+}
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 500;
+}
+
+.dashboard-logout {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+/* --- Dashboard Main Content --- */
+.dashboard-main {
+  flex: 1;
+  overflow-y: auto; /* Scroll if content is too long */
+}
+.dashboard-header {
+  padding: 1.5rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #22223B;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+.stat-card h3 {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 0.5rem 0;
+}
+.stat-card p {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #063ca8;
+  margin: 0;
 }
 

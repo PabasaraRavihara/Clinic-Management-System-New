@@ -1,95 +1,65 @@
-import { useState } from 'react'; 
-import type { Dispatch, SetStateAction, FormEvent } from 'react'; 
-import type { ViewMode } from '../types/types.ts';
-import { UserIcon, LockIcon } from '../components/Icons.tsx';
-import adminIllustration from '../assets/admin.jpg';
-import logo from '../assets/logo.png'; 
+import type { Dispatch, SetStateAction } from 'react';
+import type { ViewMode } from '../types/types.ts'; 
+import { UserIcon, SignInIcon } from '../components/Icons.tsx';
 
-interface AdminLoginProps {
+interface AdminDashboardProps {
   setViewMode: Dispatch<SetStateAction<ViewMode>>;
 }
 
-const AdminLogin = ({ setViewMode }: AdminLoginProps) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const handleLogin = (e: FormEvent) => {
-    e.preventDefault(); 
-    setError(''); 
-    
-    if (username === 'admin' && password === 'admin') {
-      // Success! Change the view to the dashboard
-      setViewMode('adminDashboard');
-    } else {
-      // Failed login
-      setError('Invalid username or password.');
-    }
+ /* ---A new component for the main admin dashboard layout--- */
+const AdminDashboard = ({ setViewMode }: AdminDashboardProps) => {
+  
+  const handleLogout = () => {
+    setViewMode('adminLogin');
   };
 
   return (
-    <>
-      {/* --- BLUE LEFT PANEL (No change) --- */}
-      <div className="form-panel blue-panel">
-        <div className="logo-container"> 
-          <img src={logo} alt="HealthCare+ Logo" className="logo-image" />
-          <h1>HealthCare +</h1>
-        </div> 
-        <h1>Admin Portal</h1>
-        <p><i>Please enter your admin credentials.</i></p>
-        <img src={adminIllustration} alt="Admin" className="panel-image" />
-      </div>
-
-      {/* --- WHITE RIGHT PANEL (Updated) --- */}
-      <div className="form-panel white-panel">
-        <div className="white-panel-header">
-          <p>
-            Are you a Patient?
-            <span onClick={() => setViewMode('patientSignIn')} className="toggle-link">Patient Login</span>
-          </p>
+    <div className="dashboard-layout">
+      {/* --- Dashboard Sidebar --- */}
+      <div className="dashboard-sidebar">
+        <div className="dashboard-logo">
+          <h2>HealthCare+</h2>
         </div>
-
-        <div className="form-content">
-          <h2 className="form-title">Admin Log In</h2>
-          
-          {/* --- UPDATED FORM --- */}
-          <form onSubmit={handleLogin}>
-            {/* Admin "User Name" field */}
-            <div className="input-group">
-              <span className="icon"><UserIcon /></span>
-              <input 
-                type="text" 
-                placeholder="User Name"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            
-            {/* Password field */}
-            <div className="input-group">
-              <span className="icon"><LockIcon /></span>
-              <input 
-                type="password" 
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            
-            {/* --- NEW: Error Message Display --- */}
-            {error && <p className="form-error">{error}</p>}
-            
-            <button type="submit" className="form-button">
-              SIGN IN
-            </button>
-          </form>
-          <p className="footer-text">
-            Access is restricted to authorized users.
-          </p>
+        <nav className="dashboard-nav">
+          <a href="#" className="nav-item active">
+            <UserIcon />
+            <span>Dashboard</span>
+          </a>
+        </nav>
+        <div className="dashboard-logout">
+          <button onClick={handleLogout} className="nav-item">
+            <SignInIcon />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
-    </>
+
+      {/* --- Main Content Area --- */}
+      <main className="dashboard-main">
+        <header className="dashboard-header">
+          <h1>Welcome,  Admin!</h1>
+        </header>
+        <section className="dashboard-content">
+          <div className="stat-card">
+            <h3>Total Patients</h3>
+            <p>1,234</p>
+          </div>
+          <div className="stat-card">
+            <h3>Doctors On Duty</h3>
+            <p>56</p>
+          </div>
+          <div className="stat-card">
+            <h3>Appointments Today</h3>
+            <p>78</p>
+          </div>
+          <div className="stat-card">
+            <h3>Pending Approvals</h3>
+            <p>12</p>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 };
 
-export default AdminLogin;
+export default AdminDashboard;
