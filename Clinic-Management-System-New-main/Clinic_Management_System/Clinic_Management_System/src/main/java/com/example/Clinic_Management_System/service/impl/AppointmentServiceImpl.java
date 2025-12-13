@@ -1,19 +1,20 @@
 package com.example.Clinic_Management_System.service.impl;
 
-import com.example.Clinic_Management_System.dto.AppointmentRequest;
-import com.example.Clinic_Management_System.repository.AppointmentRepositary;
-import com.example.Clinic_Management_System.repository.DoctorRepo;
-import com.example.Clinic_Management_System.repository.PatientRepositary;
-import com.example.Clinic_Management_System.model.Appointment;
-import com.example.Clinic_Management_System.model.Doctor;
-import com.example.Clinic_Management_System.model.Patient;
-import com.example.Clinic_Management_System.service.AppointmentService;
-import com.example.Clinic_Management_System.service.EmailService;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.example.Clinic_Management_System.dto.AppointmentRequest;
+import com.example.Clinic_Management_System.model.Appointment;
+import com.example.Clinic_Management_System.model.Doctor;
+import com.example.Clinic_Management_System.model.Patient;
+import com.example.Clinic_Management_System.repository.AppointmentRepositary;
+import com.example.Clinic_Management_System.repository.DoctorRepo;
+import com.example.Clinic_Management_System.repository.PatientRepositary;
+import com.example.Clinic_Management_System.service.AppointmentService;
+import com.example.Clinic_Management_System.service.EmailService;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -30,7 +31,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private EmailService emailService;
 
-    // --- ඔයාගේ පරණ Code ටික (කිසිම වෙනසක් නෑ) ---
+   
 
     //  Add Appointment for a specific doctor
     @Override
@@ -103,12 +104,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     // --- New Features (Updated bookAppointment) ---
 
-    // 1. DTO එක පාවිච්චි කරලා Appointment දාන අලුත් ක්‍රමය (Double Booking Check එක සහිතව)
+  
     @Override
     public Appointment bookAppointment(AppointmentRequest request) {
         
         // --- NEW: Double Booking Validation Start ---
-        // මේ වෙලාව වෙන කෙනෙක් අරගෙනද බලනවා (REJECTED ඒවා ඇරෙන්න)
+    
         boolean isTaken = appointmentRepositary.existsByDoctorIdAndDateAndTimeAndStatusNot(
                 request.getDoctorId(), 
                 request.getDate(), 
@@ -134,13 +135,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setTime(request.getTime());
         appointment.setNotes(request.getNotes());
         appointment.setStatus("PENDING");
-        // DateTime එක එකට සෙට් කිරීම
+        // DateTime 
         appointment.setAppointmentTime(LocalDateTime.of(request.getDate(), request.getTime()));
 
         return appointmentRepositary.save(appointment);
     }
 
-    // 2. Status එක Update කිරීම සහ Email යැවීම (Accept/Reject)
+    // 2. Status  Update  Email  (Accept/Reject)
     @Override
     public Appointment updateStatus(Long appointmentId, String status) {
         Appointment appointment = appointmentRepositary.findById(appointmentId)
@@ -149,7 +150,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(status);
         Appointment updatedAppointment = appointmentRepositary.save(appointment);
 
-        // REJECTED නම් විතරක් Email එක යවන්න
+        // REJECTED  Email 
         if ("REJECTED".equalsIgnoreCase(status)) {
             String patientEmail = appointment.getPatient().getEmail();
             if (patientEmail != null && !patientEmail.isEmpty()) {

@@ -1,26 +1,35 @@
 package com.example.Clinic_Management_System.controller;
 
-import com.example.Clinic_Management_System.dto.AppointmentRequest; // DTO import
+import java.time.LocalDate; // DTO import
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.Clinic_Management_System.dto.AppointmentRequest;
 import com.example.Clinic_Management_System.model.Appointment;
 import com.example.Clinic_Management_System.model.Doctor;
 import com.example.Clinic_Management_System.model.Patient;
 import com.example.Clinic_Management_System.service.AppointmentService;
 import com.example.Clinic_Management_System.service.DoctorService;
 import com.example.Clinic_Management_System.service.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/appointments")
-@CrossOrigin(origins = "*") // React Port එක
+@CrossOrigin(origins = "*") 
 public class AppointmentController {
 
     @Autowired
@@ -32,7 +41,7 @@ public class AppointmentController {
     @Autowired
     private DoctorService doctorService;
 
-    // --- ඔයාගේ පරණ Code එක (Map භාවිතා කර) - වෙනස් කළේ නෑ ---
+   
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody Map<String, String> body) {
         try {
@@ -73,17 +82,13 @@ public class AppointmentController {
         }
     }
 
-    // --- මම අලුතින් එකතු කරපු Endpoints (New Features) ---
-
-    // 1. DTO හරහා Appointment දාන API එක (වඩා හොඳ ක්‍රමය)
-    // URL: POST http://localhost:8080/api/appointments/book
+  
     @PostMapping("/book")
     public ResponseEntity<Appointment> bookAppointment(@RequestBody AppointmentRequest request) {
         return ResponseEntity.ok(appointmentService.bookAppointment(request));
     }
 
-    // 2. Doctor Status එක මාරු කරන API එක (Reject කලාම Email යයි)
-    // URL: PUT http://localhost:8080/api/appointments/{id}/status?status=REJECTED
+
     @PutMapping("/{id}/status")
     public ResponseEntity<Appointment> updateStatus(@PathVariable Long id, @RequestParam String status) {
         return ResponseEntity.ok(appointmentService.updateStatus(id, status));

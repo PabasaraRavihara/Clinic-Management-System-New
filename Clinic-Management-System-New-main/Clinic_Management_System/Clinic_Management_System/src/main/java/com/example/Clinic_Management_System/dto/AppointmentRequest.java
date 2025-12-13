@@ -10,7 +10,7 @@ public class AppointmentRequest {
     private LocalTime time;
     private String notes;
 
-    // --- Getters and Setters (මේවා අනිවාර්යයි) ---
+    // --- Getters and Setters 
 
     public Long getPatientId() {
         return patientId;
