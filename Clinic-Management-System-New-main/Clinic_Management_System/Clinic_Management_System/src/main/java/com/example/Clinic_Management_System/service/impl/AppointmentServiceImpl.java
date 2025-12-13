@@ -1,23 +1,36 @@
 package com.example.Clinic_Management_System.service.impl;
 
+import com.example.Clinic_Management_System.dto.AppointmentRequest;
 import com.example.Clinic_Management_System.repository.AppointmentRepositary;
 import com.example.Clinic_Management_System.repository.DoctorRepo;
+import com.example.Clinic_Management_System.repository.PatientRepositary;
 import com.example.Clinic_Management_System.model.Appointment;
 import com.example.Clinic_Management_System.model.Doctor;
+import com.example.Clinic_Management_System.model.Patient;
 import com.example.Clinic_Management_System.service.AppointmentService;
+import com.example.Clinic_Management_System.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public  class AppointmentServiceImpl implements AppointmentService {
+public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private AppointmentRepositary appointmentRepositary;
 
     @Autowired
     private DoctorRepo doctorRepository;
+
+    @Autowired
+    private PatientRepositary patientRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    // --- ඔයාගේ පරණ Code ටික (කිසිම වෙනසක් නෑ) ---
 
     //  Add Appointment for a specific doctor
     @Override
@@ -64,7 +77,7 @@ public  class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Appointment not found with ID: " + id));
     }
 
-   // Update appointment
+    // Update appointment
     @Override
     public Appointment updateAppointment(Appointment appointment, long id) {
         Appointment existingAppointment = appointmentRepositary.findById(id)
@@ -79,7 +92,6 @@ public  class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepositary.save(existingAppointment);
     }
 
-
     @Override
     public boolean deleteAppointment(long id) {
         if (!appointmentRepositary.existsById(id)) {
@@ -87,5 +99,68 @@ public  class AppointmentServiceImpl implements AppointmentService {
         }
         appointmentRepositary.deleteById(id);
         return true;
+    }
+
+    // --- New Features (Updated bookAppointment) ---
+
+    // 1. DTO එක පාවිච්චි කරලා Appointment දාන අලුත් ක්‍රමය (Double Booking Check එක සහිතව)
+    @Override
+    public Appointment bookAppointment(AppointmentRequest request) {
+        
+        // --- NEW: Double Booking Validation Start ---
+        // මේ වෙලාව වෙන කෙනෙක් අරගෙනද බලනවා (REJECTED ඒවා ඇරෙන්න)
+        boolean isTaken = appointmentRepositary.existsByDoctorIdAndDateAndTimeAndStatusNot(
+                request.getDoctorId(), 
+                request.getDate(), 
+                request.getTime(), 
+                "REJECTED"
+        );
+
+        if (isTaken) {
+            throw new RuntimeException("This time slot is already booked! Please choose another time.");
+        }
+        // --- NEW: Double Booking Validation End ---
+
+        Patient patient = patientRepository.findById(request.getPatientId())
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        Doctor doctor = doctorRepository.findById(request.getDoctorId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        Appointment appointment = new Appointment();
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setDate(request.getDate());
+        appointment.setTime(request.getTime());
+        appointment.setNotes(request.getNotes());
+        appointment.setStatus("PENDING");
+        // DateTime එක එකට සෙට් කිරීම
+        appointment.setAppointmentTime(LocalDateTime.of(request.getDate(), request.getTime()));
+
+        return appointmentRepositary.save(appointment);
+    }
+
+    // 2. Status එක Update කිරීම සහ Email යැවීම (Accept/Reject)
+    @Override
+    public Appointment updateStatus(Long appointmentId, String status) {
+        Appointment appointment = appointmentRepositary.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        appointment.setStatus(status);
+        Appointment updatedAppointment = appointmentRepositary.save(appointment);
+
+        // REJECTED නම් විතරක් Email එක යවන්න
+        if ("REJECTED".equalsIgnoreCase(status)) {
+            String patientEmail = appointment.getPatient().getEmail();
+            if (patientEmail != null && !patientEmail.isEmpty()) {
+                emailService.sendRejectionEmail(
+                        patientEmail,
+                        appointment.getPatient().getFirstName(),
+                        appointment.getDate().toString(),
+                        appointment.getTime().toString()
+                );
+            }
+        }
+        return updatedAppointment;
     }
 }
