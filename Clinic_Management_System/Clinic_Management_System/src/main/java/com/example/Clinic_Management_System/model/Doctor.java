@@ -34,7 +34,7 @@ public class Doctor {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "teleNumber", nullable = false)
+    @Column(name = "tele_number", nullable = false)
     private String phone;
 
     @Column(name = "experience", nullable = false)
@@ -47,7 +47,7 @@ public class Doctor {
     @JsonIgnore
     private List<Appointment> schedules;
 
-    // ---  (Manual Getters & Setters) ---
+    // --- (Manual Getters & Setters) ---
 
     public Long getId() {
         return id;
